@@ -482,8 +482,8 @@ api.deleteUserDataStream(listenKey);
 This is an API that is not officially supported. So contributions in any form, especially pull requests are always welcome.
 If you like what we do, and want to support our development of distributed future, you can also send tips:
 ```
-GAS: AKXysWVLmB2J5qxGPJLFBPducj5cNMYKLo
-ETH: 0x95E972Ff1A4CB6112cb08FE7DE81542DF9b8a0F4
+BNB: bnb136ns6lfw4zs5hg4n85vdthaad7hq5m4gtkgf23
+ETH: 0xf93ab921495bc52e5533a63f28994d758f8ab04c
 ```
 
 # License

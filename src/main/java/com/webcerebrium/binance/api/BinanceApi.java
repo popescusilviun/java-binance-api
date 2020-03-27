@@ -2,9 +2,9 @@ package com.webcerebrium.binance.api;
 
 /* ============================================================
  * java-binance-api
- * https://github.com/webcerebrium/java-binance-api
+ * https://github.com/popescusilviun/java-binance-api
  * ============================================================
- * Copyright 2017-, Viktor Lopata, Web Cerebrium OÜ
+ * Copyright 2020-, Silviu Popescu
  * Released under the MIT License
  * ============================================================ */
 
@@ -104,9 +104,9 @@ public class BinanceApi {
      */
     protected void validateCredentials() throws BinanceApiException {
         String humanMessage = "Please check environment variables or VM options";
-        if (Strings.isNullOrEmpty(this.getApiKey()))
+        if (Strings.isNullOrEmpty(this.apiKey))
             throw new BinanceApiException("Missing BINANCE_API_KEY. " + humanMessage);
-        if (Strings.isNullOrEmpty(this.getSecretKey()))
+        if (Strings.isNullOrEmpty(this.secretKey))
             throw new BinanceApiException("Missing BINANCE_SECRET_KEY. " + humanMessage);
     }
 
@@ -185,7 +185,7 @@ public class BinanceApi {
                 u += "&" + optionKey + "=" + options.get(optionKey);
             }
         }
-        String lastResponse = (new BinanceRequest(u)).read().getLastResponse();
+        String lastResponse = (new BinanceRequest(u)).read().lastResponse;
         Type listType = new TypeToken<List<BinanceAggregatedTrades>>() {
         }.getType();
         return new Gson().fromJson(lastResponse, listType);
@@ -342,13 +342,13 @@ public class BinanceApi {
      * @throws BinanceApiException in case of any error
      */
     public Map<String, BinanceTicker> allBookTickersMap() throws BinanceApiException {
-        String lastResponse = (new BinanceRequest(baseUrl + "v1/ticker/allBookTickers")).read().getLastResponse();
+        String lastResponse = (new BinanceRequest(baseUrl + "v1/ticker/allBookTickers")).read().lastResponse;
         Type listType = new TypeToken<List<BinanceTicker>>() {
         }.getType();
 
         Map<String, BinanceTicker> mapTickers = new ConcurrentHashMap<>();
         List<BinanceTicker> ticker = new Gson().fromJson(lastResponse, listType);
-        for (BinanceTicker t : ticker) mapTickers.put(t.getSymbol(), t);
+        for (BinanceTicker t : ticker) mapTickers.put(t.symbol, t);
         return mapTickers;
     }
 
@@ -712,6 +712,10 @@ public class BinanceApi {
      */
     public Session websocketKlines(BinanceSymbol symbol, BinanceInterval interval, BinanceWebSocketAdapterKline adapter) throws BinanceApiException {
         return getWebsocketSession(symbol.toString().toLowerCase() + "@kline_" + interval.toString(), adapter);
+    }
+
+    public Session websocketTicker(BinanceSymbol symbol, BinanceWebSocketAdapterTicker adapter) throws BinanceApiException {
+        return getWebsocketSession(symbol.toString().toLowerCase() + "@ticker", adapter);
     }
 
     /**

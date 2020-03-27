@@ -57,51 +57,12 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
 
     // Lombok, Improving logging
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.4'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     // JETTY WEBSOCKET CLIENT
     compile group: 'org.eclipse.jetty.websocket', name: 'websocket-client', version: '9.4.7.v20170914'
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'Binance API Client'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'Binance Cryptocurrency Exchange API Client'
-                url 'https://github.com/webcerebrium/java-binance-api'
-
-                scm {
-                    url 'scm:git@github.com/webcerebrium/java-binance-api.git'
-                    connection 'scm:git@github.com/webcerebrium/java-binance-api.git'
-                    developerConnection 'scm:git@github.com/webcerebrium/java-binance-api.git'
-                }
-
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'https://opensource.org/licenses/MIT'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'wcrbrm'
-                        name 'Viktor Lopata'
-                        email 'v.lopata@webcerebrium.com'
-                    }
-                }
-            }
-        }
-    }
 }

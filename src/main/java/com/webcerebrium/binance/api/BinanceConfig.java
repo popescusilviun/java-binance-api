@@ -10,6 +10,7 @@ package com.webcerebrium.binance.api;
 
 import com.google.common.base.Strings;
 
+import java.util.Objects;
 import java.util.Properties;
 
 public class BinanceConfig {
@@ -29,7 +30,8 @@ public class BinanceConfig {
     protected void loadProperties() {
         try {
             prop = new Properties();
-            prop.load(this.getClass().getClassLoader().getResourceAsStream("application.properties"));
+
+            prop.load(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("application.properties")));
         } catch (Exception e) {
             // it is fine not to have that resource file.
             // ignoring any error here
