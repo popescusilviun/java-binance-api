@@ -13,23 +13,18 @@ https://github.com/shufps/java-binance-api
 
 Add the following Maven dependency to your project's `pom.xml`:
 ```
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
 <dependency>
-  <groupId>com.webcerebrium</groupId>
-  <artifactId>binance-api</artifactId>
-  <version>1.0.9</version>
+    <groupId>com.github.popescusilviun</groupId>
+    <artifactId>java-binance-api</artifactId>
+    <version>master</version>
 </dependency>
-```
-
-#### with Gradle
-```
-compile group: 'com.webcerebrium', name: 'binance-api', version: '1.0.9'
-```
-
-#### with Grapes
-```
-@Grapes([ 
-@Grab(group = 'com.webcerebrium', module = 'binance-api', version = '1.0.9')
-])
 ```
 
 ### with latest source code
