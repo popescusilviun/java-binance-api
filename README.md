@@ -438,6 +438,24 @@ BinanceEventKline(eventTime=1508416507504, symbol=ETHBTC, interval=1m, startTime
 </pre>
 </details>
 
+#### Ticker Web Socket Listener
+```java
+BinanceSymbol symbol = new BinanceSymbol("SNGLSBTC");
+Session session = (new BinanceApi()).websocketTicker(symbol, new BinanceWebSocketAdapterTicker() {
+    @Override
+    public void onMessage(BinanceEventTicker message) {
+        System.out.println(message.toString());
+    }
+});
+try { Thread.sleep(15000); } catch (InterruptedException e) {}
+session.close();
+```
+<details><summary>View Output</summary>
+<pre>
+BinanceEventTicker(eventTime=1585317975462, symbol=SNGLSBTC, openTime=1585231469013, closeTime=1585317869013, firstTradeId=4989494, lastTradeId=4990771, openPrice=7.3E-7, highPrice=7.7E-7, lowPrice=7.2E-7, volume=14302164.00000000, lastPrice=7.5E-7, bestBid=7.4E-7, bestAsk=7.5E-7, priceChange=2E-8, priceChangePerc=2.74, lastQty=508.00000000, bestBidQty=655876.00000000, bestAskQty=351783.00000000, numberOfTrades=1278, quoteVolume=10.64844330)
+</pre>
+</details>
+
 #### Trades Web Socket Listener
 ```java
 BinanceSymbol symbol = new BinanceSymbol("ETHBTC");
