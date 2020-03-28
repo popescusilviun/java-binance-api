@@ -3,8 +3,10 @@ package com.webcerebrium.binance.api;
 /* ============================================================
  * java-binance-api
  * https://github.com/webcerebrium/java-binance-api
+ * https://github.com/popescusilviun/java-binance-api
  * ============================================================
  * Copyright 2017-, Viktor Lopata, Web Cerebrium OÜ
+ * Copyright 2020-, Silviu Popescu
  * Released under the MIT License
  * ============================================================ */
 
@@ -52,6 +54,7 @@ public class BinanceRequest {
 
     public String apiKey = "";
     public String secretKey = "";
+    private static long recvWindow = 7000L;
 
     public Map<String, String> headers = new HashMap<>();
 
@@ -94,8 +97,8 @@ public class BinanceRequest {
                     list.add(key + "=" + options.get(key));
                 }
             }
-            list.add("recvWindow=" + 7000);
-            list.add("timestamp=" + String.valueOf(new Date().getTime()));
+            list.add("recvWindow=" + recvWindow);
+            list.add("timestamp=" + new Date().getTime());
             String queryToAdd = String.join("&", list);
             String query = "";
             log.debug("Signature: RequestUrl = {}", requestUrl);

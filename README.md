@@ -6,6 +6,7 @@ This project seeks to have complete API coverage including User Data Streams and
 If you are seeking for a version with Android 4+ support, please take a look at
 https://github.com/shufps/java-binance-api
 
+## #NEW Websocket Ticker implementation#
 
 ## Getting Started
 
