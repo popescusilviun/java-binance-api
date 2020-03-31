@@ -24,6 +24,7 @@ public class BinanceOrderPlacement {
     public BinanceTimeInForce timeInForce = BinanceTimeInForce.GOOD_TILL_CANCELLED;
     public BigDecimal quantity;
     public BigDecimal price;
+    public String priceString = "";
     public String newClientOrderId = "";
     public BigDecimal stopPrice = null;
     public BigDecimal icebergQty = null;
@@ -64,10 +65,16 @@ public class BinanceOrderPlacement {
                 throw new BinanceApiException("Order timeInForce is not set");
             }
             sb.append("&timeInForce=").append(timeInForce.toString());
-            if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new BinanceApiException("Order price should be bigger than zero");
+
+            if( !priceString.isEmpty()) {
+                sb.append("&price=").append(priceString);
+            } else {
+
+                if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new BinanceApiException("Order price should be bigger than zero");
+                }
+                sb.append("&price=").append(price.toString());
             }
-            sb.append("&price=").append(price.toString());
         }
 
         if (!Strings.isNullOrEmpty(newClientOrderId)) {

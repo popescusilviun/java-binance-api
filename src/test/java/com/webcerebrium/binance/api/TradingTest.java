@@ -3,12 +3,15 @@ package com.webcerebrium.binance.api;
 /* ============================================================
  * java-binance-api
  * https://github.com/webcerebrium/java-binance-api
+ * https://github.com/popescusilviun/java-binance-api
  * ============================================================
  * Copyright 2017-, Viktor Lopata, Web Cerebrium OÜ
+ * Copyright 2020-, Silviu Popescu, Web Cerebrium OÜ
  * Released under the MIT License
  * ============================================================ */
 
 // This class contains tests for trading. Take it wisely
+// Completed with priceString format
 
 import com.google.gson.JsonObject;
 import com.webcerebrium.binance.datatype.BinanceOrder;
@@ -36,19 +39,19 @@ public class TradingTest {
     private BinanceWalletAsset walletAsset = null;
 
     @Before
-    public void setUp() throws Exception, BinanceApiException {
+    public void setUp() throws BinanceApiException {
         binanceApi = new BinanceApi();
-        asset = "BNB";
+        asset = "SNGLS";
         symbol = BinanceSymbol.valueOf(asset + "BTC");
         order = null;
 
         walletAsset = binanceApi.balancesMap().get(asset);
         log.info("walletAsset={}", walletAsset.toString());
-        canTrade = (walletAsset.getFree().compareTo(BigDecimal.ZERO) > 0);
+        canTrade = true; //(walletAsset.getFree().compareTo(BigDecimal.ZERO) > 0);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         if (order != null) {
             try {
                 JsonObject jsonObject = binanceApi.deleteOrder(order);
@@ -61,7 +64,7 @@ public class TradingTest {
     }
 
     @Test
-    public void testOrderWithoutPlacing() throws Exception, BinanceApiException {
+    public void testOrderWithoutPlacing() throws BinanceApiException {
         if (canTrade) {
             BinanceOrderPlacement placement = new BinanceOrderPlacement(symbol, BinanceOrderSide.SELL);
             placement.setTimeInForce(BinanceTimeInForce.GOOD_TILL_CANCELLED);
@@ -76,7 +79,22 @@ public class TradingTest {
     }
 
     @Test
-    public void testMarketOrder() throws Exception, BinanceApiException {
+    public void testOrderWithoutPlacingPriceString() throws BinanceApiException {
+        if (canTrade) {
+            BinanceOrderPlacement placement = new BinanceOrderPlacement(symbol, BinanceOrderSide.SELL);
+            placement.setTimeInForce(BinanceTimeInForce.GOOD_TILL_CANCELLED);
+            placement.setPriceString("0.00000200");
+
+            BigDecimal qty = BigDecimal.valueOf(walletAsset.getFree().longValue()); // so we could tes ton BNB
+            if (qty.compareTo(BigDecimal.ZERO) > 0) {
+                placement.setQuantity(qty); // sell some our asset for 1 BTC each
+                log.info("Order Test = {}", binanceApi.testOrder(placement));
+            }
+        }
+    }
+
+    @Test
+    public void testMarketOrder() throws BinanceApiException {
         if (canTrade) {
             // Testing Buying BNB with BTC - using market price
             BinanceOrderPlacement placement = new BinanceOrderPlacement(symbol, BinanceOrderSide.BUY);
@@ -90,7 +108,7 @@ public class TradingTest {
     }
 
     @Test
-    public void testPlacingCheckingLimitOrder() throws Exception, BinanceApiException {
+    public void testPlacingCheckingLimitOrder() throws BinanceApiException {
         if (canTrade) {
             BinanceOrderPlacement placement = new BinanceOrderPlacement(symbol, BinanceOrderSide.SELL);
             placement.setTimeInForce(BinanceTimeInForce.GOOD_TILL_CANCELLED);
